@@ -4,288 +4,286 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>우리반 타이머 · 무궁무진클래스</title>
-  <meta name="description" content="초등 교실 전자칠판용 풀스크린 픽셀 타이머. 16비트 레트로 스타일." />
+  <meta name="description" content="초등 교실 전자칠판용 풀스크린 타이머." />
   <meta property="og:title" content="우리반 타이머" />
-  <meta property="og:description" content="전자칠판용 16비트 픽셀 타이머" />
+  <meta property="og:description" content="전자칠판용 풀스크린 타이머" />
   <meta property="og:type" content="website" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%23FF9500'/%3E%3Crect x='3' y='3' width='10' height='10' fill='%232B2B2B'/%3E%3Crect x='5' y='5' width='6' height='6' fill='%23FFF8F0'/%3E%3Crect x='7' y='5' width='2' height='4' fill='%232B2B2B'/%3E%3Crect x='7' y='7' width='4' height='2' fill='%232B2B2B'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23f97316'/%3E%3Cpath d='M8 4v4l2.5 2' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
-      corePlugins: { preflight: true },
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
           colors: {
-            timer: {
-              main: '#FF9500',
-              sub: '#4A90E2',
-              cream: '#FFF8F0',
-              danger: '#FF3B30',
-              ink: '#2B2B2B',
-              gold: '#FFD700',
-              green: '#00C853',
-            }
-          }
+            dark: '#0f172a',
+            accent: '#f97316',
+            'accent-hover': '#ea580c',
+          },
         }
       }
-    };
+    }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    @font-face {
-      font-family: 'NeoDunggeunmo';
-      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/NeoDunggeunmo.woff') format('woff');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    * {
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: unset;
-      font-smooth: never;
-      image-rendering: pixelated;
-    }
-
     html, body { height: 100%; }
     body {
-      font-family: 'NeoDunggeunmo', 'DungGeunMo', monospace;
-      background-color: #FFF8F0;
-      background-image:
-        linear-gradient(#2B2B2B 1px, transparent 1px),
-        linear-gradient(90deg, #2B2B2B 1px, transparent 1px);
-      background-size: 24px 24px;
-      background-position: -1px -1px;
-      background-blend-mode: normal;
-      color: #2B2B2B;
+      background-color: #0f172a;
+      background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zM20 0h20v20H20V0zM0 0h20v20H0V0z" fill="%231e293b" fill-opacity="0.2" fill-rule="evenodd"/%3E%3C/svg%3E');
       overflow: hidden;
-      letter-spacing: 0;
-      image-rendering: pixelated;
-    }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background: rgba(255, 248, 240, 0.85);
-      pointer-events: none;
-      z-index: 0;
+      transition: background-color 0.15s ease;
     }
 
-    /* === 픽셀 타이머 숫자 === */
-    .timer-digits {
-      font-family: 'NeoDunggeunmo', monospace;
-      font-size: clamp(7rem, 22vw, 26rem);
-      line-height: 1;
-      letter-spacing: 0.04em;
-      color: #2B2B2B;
-      text-shadow:
-        4px 0 0 #FF9500,
-        8px 4px 0 #2B2B2B;
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    /* === 브루탈리즘 === */
+    .brutal {
+      border: 3px solid #0f172a;
+      box-shadow: 6px 6px 0 #0f172a, 6px 6px 0 2px #f97316;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      border-radius: 14px;
+    }
+    .brutal:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 10px 10px 0 #0f172a, 10px 10px 0 2px #f97316;
+    }
+    .brutal:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #0f172a, 2px 2px 0 2px #f97316;
+    }
+
+    .brutal-soft {
+      border: 2px solid #1e293b;
+      box-shadow: 4px 4px 0 #1e293b;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      border-radius: 12px;
+    }
+    .brutal-soft:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 #1e293b;
+    }
+    .brutal-soft:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 #1e293b;
+    }
+
+    /* 작은 아이콘 버튼 호버 */
+    .hover-pop {
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+    .hover-pop:hover { transform: translateY(-2px) scale(1.05); }
+    .hover-pop:active { transform: translateY(1px) scale(0.97); }
+
+    /* 프리셋 호버 */
+    .preset {
+      transition: transform 0.12s ease, background-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .preset:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 #0f172a;
+    }
+    .preset:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 #0f172a;
+    }
+
+    /* 타이머 숫자 호버 인터랙션 */
+    .timer-wrap {
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    .timer-wrap:hover { transform: scale(1.02); }
+    .timer-wrap:hover .timer-glow { text-shadow: 0 0 50px rgba(249, 115, 22, 0.55); }
+
+    .timer-glow {
+      text-shadow: 0 0 30px rgba(249, 115, 22, 0.35);
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .timer-digits-num { color: #f1f5f9; transition: color 0.2s ease; }
     .timer-colon {
-      display: inline-block;
-      margin: 0 0.05em;
+      color: #f97316;
+      margin: 0 0.04em;
     }
     .timer-colon.blink { animation: colonBlink 1s steps(2, start) infinite; }
-    @keyframes colonBlink { 50% { opacity: 0; } }
+    @keyframes colonBlink { 50% { opacity: 0.15; } }
 
-    .finished .timer-digits {
-      color: #FF3B30;
-      text-shadow:
-        4px 0 0 #FFD700,
-        8px 4px 0 #2B2B2B;
+    /* 종료 상태 */
+    .finished .timer-digits-num { color: #ef4444; }
+    .finished .timer-glow { text-shadow: 0 0 40px rgba(239, 68, 68, 0.7); }
+
+    /* 마지막 10초 긴급 */
+    .urgent .timer-digits-num { color: #ef4444; }
+    .urgent .timer-glow {
+      text-shadow: 0 0 35px rgba(239, 68, 68, 0.6);
+      animation: urgentPulse 1s steps(2, end) infinite;
+    }
+    @keyframes urgentPulse {
+      0%, 49%   { transform: scale(1); }
+      50%, 100% { transform: scale(1.03); }
+    }
+    .urgent #progressFill {
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.7);
     }
 
-    /* === 화면 깜빡임 === */
-    .flash { animation: flashBg 0.5s steps(2, end) 5; }
+    /* 종료 깜빡임 */
+    .flash { animation: flashBg 0.4s steps(2, end) 5; }
     @keyframes flashBg {
-      0%, 49%   { background-color: #FF3B30; }
-      50%, 100% { background-color: #FFF8F0; }
+      0%, 49%   { background-color: #ef4444; }
+      50%, 100% { background-color: #0f172a; }
     }
 
-    /* === 픽셀 버튼 공통 === */
-    .pix-btn {
-      font-family: 'NeoDunggeunmo', monospace;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #FFFFFF;
-      color: #2B2B2B;
-      border: 4px solid #2B2B2B;
-      box-shadow: 4px 4px 0 #2B2B2B;
-      padding: 0.6rem 1.1rem;
-      font-size: 1.25rem;
-      cursor: pointer;
-      user-select: none;
-      transition: none;
-      position: relative;
-    }
-    .pix-btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 #2B2B2B;
-    }
-    .pix-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 #2B2B2B;
+    /* 프리셋 active */
+    .preset.active {
+      background: #f97316;
+      color: white;
+      box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
     }
 
-    .pix-btn.preset.active {
-      background: #FF9500;
-      color: #FFFFFF;
-    }
-    .pix-btn.primary {
-      background: #FF9500;
-      color: #FFFFFF;
-      font-size: 1.75rem;
-      padding: 0.9rem 2rem;
-    }
-    .pix-btn.secondary {
-      background: #4A90E2;
-      color: #FFFFFF;
-      font-size: 1.75rem;
-      padding: 0.9rem 2rem;
-    }
-    .pix-btn.danger {
-      background: #FF3B30;
-      color: #FFFFFF;
-    }
-    .pix-btn.fs {
-      width: 56px; height: 56px;
-      padding: 0;
-      font-size: 0;
-    }
-    .pix-btn.fs::before {
-      content: '';
-      display: block;
-      width: 24px; height: 24px;
-      background:
-        linear-gradient(#2B2B2B,#2B2B2B) left top/8px 4px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) left top/4px 8px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) right top/8px 4px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) right top/4px 8px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) left bottom/8px 4px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) left bottom/4px 8px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) right bottom/8px 4px no-repeat,
-        linear-gradient(#2B2B2B,#2B2B2B) right bottom/4px 8px no-repeat;
+    /* 진행바 */
+    #progressFill {
+      background: #f97316;
+      box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+      transition: width 0.25s linear, background 0.2s ease;
     }
 
-    @media (max-width: 640px) {
-      .pix-btn { font-size: 1rem; padding: 0.5rem 0.8rem; border-width: 3px; box-shadow: 3px 3px 0 #2B2B2B; }
-      .pix-btn.primary, .pix-btn.secondary { font-size: 1.25rem; padding: 0.7rem 1.4rem; }
-      .pix-btn:hover { box-shadow: 5px 5px 0 #2B2B2B; }
-      .pix-btn:active { box-shadow: 1px 1px 0 #2B2B2B; }
-    }
-
-    /* === 제목 입력 === */
+    /* 제목 입력 */
     .title-input {
-      font-family: 'NeoDunggeunmo', monospace;
-      font-size: clamp(1.4rem, 3.5vw, 2.6rem);
-      text-align: center;
-      width: 100%;
-      max-width: 92vw;
       background: transparent;
-      border: 4px dashed transparent;
+      border: none;
       outline: none;
-      color: #2B2B2B;
-      padding: 0.4rem 0.8rem;
+      color: #cbd5e1;
+      text-align: center;
+      font-weight: 500;
+      width: 22rem;
+      max-width: 90vw;
+      padding: 0.2rem 0.4rem;
+      border-bottom: 1px dashed transparent;
     }
-    .title-input::placeholder { color: rgba(43,43,43,0.35); }
-    .title-input:focus {
-      background: #FFFFFF;
-      border-color: #2B2B2B;
-      box-shadow: 4px 4px 0 #2B2B2B;
-    }
+    .title-input::placeholder { color: #475569; }
+    .title-input:focus { border-bottom-color: #475569; color: #f1f5f9; }
 
-    /* === 커스텀 시간 패널 === */
+    /* 커스텀 시간 패널 */
     .custom-panel {
       display: none;
       align-items: center;
       gap: 0.6rem;
-      background: #FFFFFF;
-      border: 4px solid #2B2B2B;
-      box-shadow: 4px 4px 0 #2B2B2B;
-      padding: 0.8rem 1rem;
       flex-wrap: wrap;
       justify-content: center;
     }
     .custom-panel.open { display: flex; }
     .custom-panel input {
-      font-family: 'NeoDunggeunmo', monospace;
       width: 5rem;
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       text-align: center;
-      background: #FFF8F0;
-      border: 4px solid #2B2B2B;
-      padding: 0.3rem 0.4rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #f1f5f9;
+      border-radius: 0.75rem;
+      padding: 0.4rem 0.6rem;
       outline: none;
-      color: #2B2B2B;
     }
-    .custom-panel input:focus {
-      background: #FFD700;
-    }
-    .custom-panel label {
-      font-size: 1.25rem;
-      color: #2B2B2B;
-    }
+    .custom-panel input:focus { border-color: #f97316; }
+    .custom-panel label { color: #94a3b8; font-size: 0.85rem; font-weight: 500; }
 
-    /* === 푸터 링크 === */
-    .pix-link {
-      color: #4A90E2;
-      text-decoration: underline;
-    }
-    .pix-link:hover { color: #FF9500; }
+    ::-webkit-scrollbar { display: none; }
 
     @media (max-width: 640px) {
-      .timer-digits { font-size: clamp(5rem, 28vw, 10rem); text-shadow: 3px 0 0 #FF9500, 6px 3px 0 #2B2B2B; }
+      .title-input { font-size: 1rem; width: 16rem; }
     }
-
-    #app { position: relative; z-index: 1; }
   </style>
 </head>
-<body class="select-none">
-  <div id="app" class="flex flex-col h-screen w-screen px-3 sm:px-6 py-3 sm:py-4">
+<body class="text-gray-100 min-h-screen flex flex-col font-sans antialiased">
 
-    <header class="flex items-start justify-between gap-3 flex-wrap">
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <button class="pix-btn preset" data-preset="1">1분</button>
-        <button class="pix-btn preset" data-preset="3">3분</button>
-        <button class="pix-btn preset" data-preset="5">5분</button>
-        <button class="pix-btn preset" data-preset="10">10분</button>
-        <button class="pix-btn preset" data-preset="15">15분</button>
-        <button id="btnCustom" class="pix-btn">+TIME</button>
-      </div>
+  <!-- 상단 -->
+  <header class="p-4 sm:p-6 flex justify-between items-start w-full relative z-10 gap-3 flex-wrap">
+    <nav class="brutal-soft bg-slate-900/80 p-1.5 flex gap-1 flex-wrap">
+      <button class="preset px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-slate-700/60" data-preset="1">1분</button>
+      <button class="preset px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-slate-700/60" data-preset="3">3분</button>
+      <button class="preset px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-slate-700/60" data-preset="5">5분</button>
+      <button class="preset px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-slate-700/60" data-preset="10">10분</button>
+      <button class="preset px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-gray-300 hover:text-white hover:bg-slate-700/60" data-preset="15">15분</button>
+      <button id="btnCustom" class="px-3 sm:px-4 py-2 rounded-lg text-sm font-bold text-accent hover:text-white hover:bg-accent border-2 border-accent/60 transition-colors">+TIME</button>
+    </nav>
 
-      <button id="btnFullscreen" class="pix-btn fs" aria-label="풀스크린"></button>
-    </header>
+    <div class="brutal-soft bg-slate-900/80 p-1.5 flex gap-1">
+      <button id="btnSound" aria-label="사운드" class="hover-pop p-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-700/60">
+        <svg id="iconSoundOn" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M10 19l-7-7H2V8h5l7-7v18z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+        <svg id="iconSoundOff" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 19l-7-7H2V8h5l7-7v18zM17 9l4 4m0-4l-4 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </button>
+      <button id="btnFullscreen" aria-label="풀스크린" class="hover-pop p-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-slate-700/60">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+  </header>
 
-    <div id="customPanel" class="custom-panel mt-3 mx-auto">
-      <label for="inpMin">MIN</label>
-      <input id="inpMin" type="number" min="0" max="180" inputmode="numeric" value="0" />
-      <label for="inpSec">SEC</label>
-      <input id="inpSec" type="number" min="0" max="59" inputmode="numeric" value="30" />
-      <button id="btnApplyCustom" class="pix-btn primary" style="font-size:1.1rem;padding:0.5rem 1rem;">SET</button>
-      <button id="btnCloseCustom" class="pix-btn" style="font-size:1.1rem;padding:0.5rem 1rem;">X</button>
+  <!-- 커스텀 시간 패널 -->
+  <div id="customPanel" class="custom-panel brutal-soft bg-slate-900/90 px-4 py-3 mx-auto">
+    <label for="inpMin">MIN</label>
+    <input id="inpMin" type="number" min="0" max="180" inputmode="numeric" value="0" />
+    <label for="inpSec">SEC</label>
+    <input id="inpSec" type="number" min="0" max="59" inputmode="numeric" value="30" />
+    <button id="btnApplyCustom" class="brutal bg-accent hover:bg-accent-hover text-white text-sm font-bold px-4 py-2">SET</button>
+    <button id="btnCloseCustom" class="brutal-soft bg-slate-800 text-slate-200 hover:text-white text-sm font-bold px-3 py-2">✕</button>
+  </div>
+
+  <!-- 메인 -->
+  <main class="flex-1 flex flex-col items-center justify-center relative w-full max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="mb-8 sm:mb-12">
+      <input id="titleInput" class="title-input text-lg sm:text-xl" type="text" maxlength="40" placeholder="제목을 입력하세요" />
     </div>
 
-    <main class="flex-1 flex flex-col items-center justify-center gap-3 sm:gap-6">
-      <input id="titleInput" class="title-input" type="text" maxlength="40" placeholder="▶ 제목을 입력하세요" />
-      <div id="timerDisplay" class="timer-digits">
-        <span id="mm">00</span><span id="colon" class="timer-colon">:</span><span id="ss">00</span>
-      </div>
-    </main>
+    <div class="timer-wrap text-[7rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] leading-none font-mono font-bold tracking-tight flex items-center justify-center timer-glow relative z-10 select-none">
+      <span id="mm" class="timer-digits-num">05</span>
+      <span id="colon" class="timer-colon pb-6 sm:pb-12 md:pb-20">:</span>
+      <span id="ss" class="timer-digits-num">00</span>
+    </div>
 
-    <section class="flex items-center justify-center gap-3 sm:gap-5 pb-2">
-      <button id="btnStart" class="pix-btn primary">START</button>
-      <button id="btnReset" class="pix-btn secondary">RESET</button>
-    </section>
+    <div class="w-full max-w-3xl mt-6 sm:mt-8 h-2 bg-slate-800/80 rounded-full overflow-hidden shadow-inner">
+      <div id="progressFill" class="h-full rounded-full" style="width:100%"></div>
+    </div>
+  </main>
 
-    <footer class="text-center text-xs sm:text-base text-timer-ink pt-2 pb-1">
-      © 2026 무궁무진클래스 · 용쌤 · <a href="https://mumuclass.kr" target="_blank" rel="noopener" class="pix-link">mumuclass.kr</a>
-      <span class="hidden sm:inline ml-3">[SPACE] START/STOP · [R] RESET · [F] FULL</span>
-    </footer>
-  </div>
+  <!-- 하단 컨트롤 -->
+  <footer class="p-4 sm:p-8 flex flex-col items-center gap-4 sm:gap-6 relative z-10">
+    <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+      <button id="btnStart" class="brutal bg-accent hover:bg-accent-hover text-white font-black py-3 sm:py-4 px-8 sm:px-14 text-base sm:text-xl tracking-widest">START</button>
+      <button id="btnPlus" class="brutal-soft bg-slate-800 text-slate-100 hover:text-white font-bold py-3 sm:py-4 px-4 sm:px-6 text-sm hover:bg-slate-700">+1분</button>
+      <button id="btnReset" class="brutal-soft bg-slate-800 text-slate-100 hover:text-white font-black py-3 sm:py-4 px-6 sm:px-10 text-base sm:text-lg hover:bg-slate-700 tracking-wider">RESET</button>
+    </div>
+
+    <div class="text-[10px] sm:text-xs text-slate-500 font-medium flex gap-2 sm:gap-4 opacity-70 flex-wrap justify-center">
+      <span>[SPACE] START/STOP</span>
+      <span>[R] RESET</span>
+      <span>[F] FULL</span>
+      <span>[+] +1분</span>
+      <span>[M] MUTE</span>
+    </div>
+
+    <div class="text-[10px] sm:text-xs text-slate-600">
+      © 2026 무궁무진클래스 · 용쌤 ·
+      <a href="https://mumuclass.kr" target="_blank" rel="noopener" class="text-accent/70 hover:text-accent underline">mumuclass.kr</a>
+    </div>
+  </footer>
 
   <script>
     (() => {
@@ -296,8 +294,13 @@
       const $colon = document.getElementById('colon');
       const $btnStart = document.getElementById('btnStart');
       const $btnReset = document.getElementById('btnReset');
+      const $btnPlus = document.getElementById('btnPlus');
+      const $btnSound = document.getElementById('btnSound');
+      const $iconSoundOn = document.getElementById('iconSoundOn');
+      const $iconSoundOff = document.getElementById('iconSoundOff');
       const $btnFullscreen = document.getElementById('btnFullscreen');
-      const $presets = document.querySelectorAll('.pix-btn.preset[data-preset]');
+      const $progressFill = document.getElementById('progressFill');
+      const $presets = document.querySelectorAll('.preset[data-preset]');
       const $btnCustom = document.getElementById('btnCustom');
       const $customPanel = document.getElementById('customPanel');
       const $inpMin = document.getElementById('inpMin');
@@ -314,6 +317,10 @@
       let intervalId = null;
       let finishTimeoutId = null;
       let audioCtx = null;
+      let soundOn = true;
+      let lastTickSec = -1;
+      let wakeLock = null;
+      try { soundOn = localStorage.getItem('ddak-timer-sound') !== 'off'; } catch (_) {}
 
       function render() {
         const ms = Math.max(0, state === STATES.RUNNING ? targetEpoch - Date.now() : remainingMs);
@@ -327,14 +334,22 @@
 
         document.body.classList.toggle('finished', state === STATES.FINISHED);
         $colon.classList.toggle('blink', state === STATES.RUNNING);
+
+        const pct = totalMs > 0 ? Math.max(0, Math.min(100, (ms / totalMs) * 100)) : 0;
+        $progressFill.style.width = pct + '%';
+
+        const urgent = state === STATES.RUNNING && totalSec > 0 && totalSec <= 10;
+        document.body.classList.toggle('urgent', urgent);
+        if (urgent && totalSec !== lastTickSec) {
+          lastTickSec = totalSec;
+          tickBeep();
+        }
+        if (!urgent) lastTickSec = -1;
       }
 
       function tick() {
         if (state !== STATES.RUNNING) return;
-        if (Date.now() >= targetEpoch) {
-          triggerFinish();
-          return;
-        }
+        if (Date.now() >= targetEpoch) { triggerFinish(); return; }
         render();
         rafId = requestAnimationFrame(tick);
       }
@@ -342,8 +357,11 @@
       function triggerFinish() {
         if (state === STATES.FINISHED) return;
         stopLoops();
+        releaseWakeLock();
         remainingMs = 0;
         state = STATES.FINISHED;
+        document.body.classList.remove('urgent');
+        lastTickSec = -1;
         render();
         finishEffects();
       }
@@ -357,7 +375,6 @@
       function setPreset(min) {
         setTime(min * 60 * 1000);
         $presets.forEach(btn => btn.classList.toggle('active', Number(btn.dataset.preset) === min));
-        $btnCustom.classList.remove('active');
       }
 
       function setTime(ms) {
@@ -365,7 +382,31 @@
         totalMs = ms;
         remainingMs = totalMs;
         state = STATES.IDLE;
-        document.body.classList.remove('flash', 'finished');
+        document.body.classList.remove('flash', 'finished', 'urgent');
+        lastTickSec = -1;
+        releaseWakeLock();
+        render();
+      }
+
+      function addOneMinute() {
+        const ADD = 60 * 1000;
+        if (state === STATES.RUNNING) {
+          targetEpoch += ADD;
+          totalMs += ADD;
+          if (finishTimeoutId) clearTimeout(finishTimeoutId);
+          finishTimeoutId = setTimeout(triggerFinish, Math.max(0, targetEpoch - Date.now()) + 20);
+        } else if (state === STATES.PAUSED) {
+          remainingMs += ADD;
+          totalMs += ADD;
+        } else {
+          if (state === STATES.FINISHED) {
+            document.body.classList.remove('flash', 'finished', 'urgent');
+            totalMs = 0;
+          }
+          totalMs += ADD;
+          remainingMs = totalMs;
+          state = STATES.IDLE;
+        }
         render();
       }
 
@@ -376,7 +417,6 @@
         if (ms <= 0) return;
         setTime(ms);
         $presets.forEach(btn => btn.classList.remove('active'));
-        $btnCustom.classList.add('active');
         $customPanel.classList.remove('open');
       }
 
@@ -384,17 +424,19 @@
         if (state === STATES.FINISHED) {
           remainingMs = totalMs;
           state = STATES.IDLE;
-          document.body.classList.remove('flash', 'finished');
+          document.body.classList.remove('flash', 'finished', 'urgent');
         }
         if (state === STATES.RUNNING) {
           remainingMs = Math.max(0, targetEpoch - Date.now());
           state = STATES.PAUSED;
           stopLoops();
+          releaseWakeLock();
           render();
           return;
         }
         if (remainingMs <= 0) return;
         unlockAudio();
+        requestWakeLock();
         targetEpoch = Date.now() + remainingMs;
         state = STATES.RUNNING;
         render();
@@ -407,20 +449,45 @@
         stopLoops();
         remainingMs = totalMs;
         state = STATES.IDLE;
-        document.body.classList.remove('flash', 'finished');
+        lastTickSec = -1;
+        document.body.classList.remove('flash', 'finished', 'urgent');
+        releaseWakeLock();
         render();
       }
 
-      function unlockAudio() {
-        if (audioCtx) return;
+      async function requestWakeLock() {
         try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
         } catch (_) {}
       }
+      function releaseWakeLock() {
+        if (wakeLock) { try { wakeLock.release(); } catch (_) {} wakeLock = null; }
+      }
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && state === STATES.RUNNING && !wakeLock) requestWakeLock();
+      });
 
-      // 8비트 칩튠 느낌의 사각파(square) 비프
+      function unlockAudio() {
+        if (audioCtx) return;
+        try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
+      }
+
+      function tickBeep() {
+        if (!soundOn || !audioCtx) return;
+        const t0 = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(1200, t0);
+        gain.gain.setValueAtTime(0, t0);
+        gain.gain.linearRampToValueAtTime(0.18, t0 + 0.005);
+        gain.gain.linearRampToValueAtTime(0, t0 + 0.06);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t0); osc.stop(t0 + 0.08);
+      }
+
       function beep(delaySec, freq) {
-        if (!audioCtx) return;
+        if (!soundOn || !audioCtx) return;
         const t0 = audioCtx.currentTime + delaySec;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -430,14 +497,12 @@
         gain.gain.linearRampToValueAtTime(0.25, t0 + 0.005);
         gain.gain.linearRampToValueAtTime(0, t0 + 0.18);
         osc.connect(gain).connect(audioCtx.destination);
-        osc.start(t0);
-        osc.stop(t0 + 0.2);
+        osc.start(t0); osc.stop(t0 + 0.2);
       }
 
       function finishEffects() {
         unlockAudio();
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        // 8비트 펜파레: 도-미-솔
         beep(0.00, 523);
         beep(0.18, 659);
         beep(0.36, 784);
@@ -446,19 +511,18 @@
         document.body.classList.remove('flash');
         void document.body.offsetWidth;
         document.body.classList.add('flash');
-        setTimeout(() => document.body.classList.remove('flash'), 2600);
+        setTimeout(() => document.body.classList.remove('flash'), 2200);
 
         if (window.confetti) {
-          const palette = ['#FF9500', '#4A90E2', '#FF3B30', '#FFD700', '#00C853', '#2B2B2B'];
+          const palette = ['#f97316', '#fb923c', '#ef4444', '#fbbf24', '#f1f5f9'];
           const shoot = (x) => window.confetti({
-            particleCount: 60,
-            spread: 60,
-            startVelocity: 50,
+            particleCount: 70,
+            spread: 70,
+            startVelocity: 55,
             origin: { x, y: 0.7 },
             colors: palette,
-            shapes: ['square'],
-            scalar: 1.4,
-            ticks: 200,
+            scalar: 1.2,
+            ticks: 220,
           });
           shoot(0.2);
           setTimeout(() => shoot(0.5), 180);
@@ -467,19 +531,26 @@
       }
 
       function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen?.();
-        } else {
-          document.exitFullscreen?.();
-        }
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
       }
 
-      $presets.forEach(btn => btn.addEventListener('click', () => {
-        const min = Number(btn.dataset.preset);
-        setPreset(min);
-      }));
+      function updateSoundBtn() {
+        $iconSoundOn.classList.toggle('hidden', !soundOn);
+        $iconSoundOff.classList.toggle('hidden', soundOn);
+      }
+      function toggleSound() {
+        soundOn = !soundOn;
+        try { localStorage.setItem('ddak-timer-sound', soundOn ? 'on' : 'off'); } catch (_) {}
+        updateSoundBtn();
+      }
+      updateSoundBtn();
+
+      $presets.forEach(btn => btn.addEventListener('click', () => setPreset(Number(btn.dataset.preset))));
       $btnStart.addEventListener('click', startOrPause);
       $btnReset.addEventListener('click', reset);
+      $btnPlus.addEventListener('click', addOneMinute);
+      $btnSound.addEventListener('click', toggleSound);
       $btnFullscreen.addEventListener('click', toggleFullscreen);
 
       $btnCustom.addEventListener('click', () => {
@@ -510,6 +581,8 @@
         if (e.code === 'Space') { e.preventDefault(); startOrPause(); }
         else if (e.key === 'r' || e.key === 'R') { e.preventDefault(); reset(); }
         else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+        else if (e.key === '+' || e.key === '=') { e.preventDefault(); addOneMinute(); }
+        else if (e.key === 'm' || e.key === 'M') { e.preventDefault(); toggleSound(); }
       });
 
       setPreset(5);
